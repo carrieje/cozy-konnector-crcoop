@@ -1,6 +1,5 @@
 'use strict'
 const {BaseKonnector, addData, updateOrCreate} = require('cozy-konnector-libs')
-const bluebird = require('bluebird')
 const {login, parseAccounts, fetchIBANs, fetchOperations} = require('./lib')
 
 module.export = new BaseKonnector(start)
@@ -11,10 +10,10 @@ function start (fields) {
   .then(fetchIBANs)
   .then(saveAccounts)
   .then(accounts =>
-    bluebird.each(accounts, account => {
-      return fetchOperations(account)
-        .then(saveOperations)
-    })
+    Promise.all(accounts.map(account =>
+      fetchOperations(account)
+      .then(saveOperations)
+    ))
   )
 }
 
