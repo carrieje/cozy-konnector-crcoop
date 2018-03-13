@@ -1,6 +1,7 @@
 'use strict'
 const {errors, log, requestFactory} = require('cozy-konnector-libs')
 const cheerio = require('cheerio')
+const Replay = require('replay')
 
 module.exports.init = function (
   baseUrl,
